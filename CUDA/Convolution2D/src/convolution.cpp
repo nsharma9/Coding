@@ -6,7 +6,7 @@ void convolve2D_CPU(const Mat& image, const Mat& kernel, Mat& output)
 	output.size_x = image.size_x + kernel.size_x - 1;
 	output.size_y = image.size_y + kernel.size_y - 1;
 	
-	// allocate data to matrix
+	// allocate memory to matrix
 	float** out = new float*[output.size_x]; 
 	for(int i=0; i < output.size_x; i++)
 		out[i] = new float[output.size_y];

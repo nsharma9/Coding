@@ -24,3 +24,4 @@ struct _Mat {
 typedef _Mat Mat;
 
 void convolve2D_CPU(const Mat&, const Mat&, Mat&);
+void convolve2D_GPU(const Mat&, const Mat&, Mat&);
