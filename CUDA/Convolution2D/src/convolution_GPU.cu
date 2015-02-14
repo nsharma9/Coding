@@ -17,6 +17,13 @@
  */
 #include "convolution.hpp"
 
+//Kernel Code
+//
+__global__ void conv2(float *d_image, int i_x, int i_y, float *d_kernel, int k_x, int k_y, float *d_output, int o_x, int o_y, size_t pitch_id, size_t pitch_kd)
+{
+		
+}
+
 //Host Code (xx.cpp and xx.cu):
 //
 void convolve2D_GPU(const Mat& image, const Mat& kernel, Mat& output)
