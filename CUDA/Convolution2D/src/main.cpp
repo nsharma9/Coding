@@ -31,8 +31,9 @@ int main(int argc, char* argv[])
 	convolve2D_CPU(image, kernel, output);
 	cout << "A_size: x=" << image.size_x << ", y=" << image.size_y << endl;
 	cout << "H_size: x=" << kernel.size_x << ", y=" << kernel.size_y << endl;
-	cout << "output:" << endl;
+	cout << "Output:" << endl;
 	rd->printArr(output.mat, output.size_x, output.size_y);
+	cout << "O_size: x=" << output.size_x << ", y=" << output.size_y << endl;
 	delete rd;
 	return 0;
 }
