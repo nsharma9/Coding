@@ -29,6 +29,8 @@ __global__ void conv2(float *d_image, int i_x, int i_y, float *d_kernel, int k_x
 void convolve2D_GPU(const Mat& image, const Mat& kernel, Mat& output)
 {
 	//	Initialize/acquire device (GPU)
+	dim3 gridDim  = dim3(image.size_x/kernel.size_x, image.size_y/kernel.size_y, 1);
+	dim3 blockDim = dim3(kernel.size_x, kernel.size_y, 1);
 	output.size_x = image.size_x + kernel.size_x - 1;
 	output.size_y = image.size_y + kernel.size_y - 1;
 
@@ -50,7 +52,10 @@ void convolve2D_GPU(const Mat& image, const Mat& kernel, Mat& output)
 		for (int j=0; j < kernel.size_y; ++j)
 			h_kernel[i*kernel.size_y+j] = kernel.mat[i][j];	
 
-	h_output = new float[output.size_x * output.size_y];	
+	h_output = new float[output.size_x * output.size_y];
+
+	size_t pitch_ih = image.size_y * sizeof(float);
+	size_t pitch_kh = kernel.size_y * sizeof(float);
 
 	//	Allocate memory on GPU
 	size_t pitch_id;
@@ -60,12 +65,11 @@ void convolve2D_GPU(const Mat& image, const Mat& kernel, Mat& output)
 	cudaMalloc(&d_output, o_width * o_height);
 
 	//	Copy data from host to GPU
-	cudaMemcpy2D(d_image, pitch_id, h_image, i_width, i_height, cudaMemcpyHostToDevice);
-	cudaMemcpy2D(d_kernel, pitch_kd, h_kernel, k_width, k_height, cudaMemcpyHostToDevice);
+	cudaMemcpy2D(d_image, pitch_id, h_image, pitch_ih, i_width, i_height, cudaMemcpyHostToDevice);
+	cudaMemcpy2D(d_kernel, pitch_kd, h_kernel, pitch_kh, k_width, k_height, cudaMemcpyHostToDevice);
 
 	//	Execute kernel on GPU
-	conv2<<<>>>(d_image, image.size_x, image.size_y , d_kernel, kernel.size_x, kernel.size_y, d_output, output.size_x, output.size_y, pitch_id, pitch_kd);
-	cudaDeviceSynchronize();
+	conv2<<<gridDim, blockDim>>>(d_image, image.size_x, image.size_y , d_kernel, kernel.size_x, kernel.size_y, d_output, output.size_x, output.size_y, pitch_id, pitch_kd);
 
 	//	Copy data from GPU to host
 	cudaMemcpy(h_output, d_output, o_width * o_height, cudaMemcpyDeviceToHost);	
