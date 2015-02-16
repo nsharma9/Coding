@@ -1,6 +1,6 @@
 CC=g++
 NCC=nvcc
-FLAGS=-g -lcudart
+FLAGS=-g -lcudart 
 NFLAGS=-deviceemu
 SRC=$(wildcard src/*.c src/*.cpp src/*.hpp src/*.h)
 NSRC=$(wildcard src/*.cu)
