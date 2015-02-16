@@ -15,7 +15,7 @@ void convolve2D_CPU(const Mat& image, const Mat& kernel, Mat& output)
 	for(int o_x=0; o_x < output.size_x; o_x++) {
 		for(int o_y=0; o_y < output.size_y; o_y++)
 		{
-			int sum=0;
+			float sum=0;
 			for(int k_x=0; k_x < kernel.size_x; k_x++) {
 				for (int k_y=0; k_y < kernel.size_y; k_y++)
 				{

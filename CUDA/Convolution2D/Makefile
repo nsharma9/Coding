@@ -11,7 +11,7 @@ LD=/usr/local/cuda/lib
 	$(CC) $(FLAGS) -o ./bin/2dconvol.o $(SRC) $(NOBJ) -L $(LD)
 
 cuda.o:
-	$(NCC) $(NFLAGS) -c $(NSRC)
+	$(NCC) $(NFLAGS) -c $(NSRC) 
 	mv *.o src/
 
 run: 2dconvol.o
